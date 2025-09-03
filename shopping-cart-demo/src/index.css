@@ -1,0 +1,9 @@
+button {
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+button:hover { background: #f7f7f7; }
+input[type="number"] { padding: 6px; }

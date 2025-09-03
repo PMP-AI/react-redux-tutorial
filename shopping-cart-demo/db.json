@@ -1,0 +1,8 @@
+{
+  "products": [
+    { "id": 1, "title": "Mechanical Keyboard", "price": 2990, "thumbnail": "https://picsum.photos/seed/kb/200/140" },
+    { "id": 2, "title": "Wireless Mouse", "price": 990, "thumbnail": "https://picsum.photos/seed/mouse/200/140" },
+    { "id": 3, "title": "27\" Monitor", "price": 6990, "thumbnail": "https://picsum.photos/seed/monitor/200/140" },
+    { "id": 4, "title": "USB-C Hub", "price": 1290, "thumbnail": "https://picsum.photos/seed/hub/200/140" }
+  ]
+}
