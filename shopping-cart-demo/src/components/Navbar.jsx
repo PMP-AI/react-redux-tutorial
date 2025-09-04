@@ -13,6 +13,9 @@ export default function Navbar() {
         <Link to="/cart" style={{ textDecoration: 'none', color: 'inherit' }}>
           購物車 ({count})
         </Link>
+        <Link to="/orders" style={{ textDecoration: 'none', color: 'inherit' }}>
+          訂單列表
+        </Link>
       </div>
     </nav>
   )

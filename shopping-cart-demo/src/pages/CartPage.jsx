@@ -1,10 +1,37 @@
 import Cart from '../components/Cart'
-import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { selectCartItems } from '../features/cart/cartSlice'
+import { Link, useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { selectCartItems, selectSubtotal, clearCart } from '../features/cart/cartSlice'
+import { selectDiscount, selectTotal } from '../features/coupon/couponSlice'
+import { useCreateOrderMutation } from '../features/products/productsApi'
 
 export default function CartPage() {
   const items = useSelector(selectCartItems)
+  const subtotal = useSelector(selectSubtotal)
+  const discount = useSelector(selectDiscount)
+  const total = useSelector(selectTotal)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const [createOrder, { isLoading }] = useCreateOrderMutation()
+
+  const handleCheckout = async () => {
+    try {
+      await createOrder({
+        items,
+        subtotal,
+        discount,
+        total,
+        createdAt: new Date().toISOString(),
+      }).unwrap()
+      dispatch(clearCart())
+      // ✅ 成功後自動導向訂單列表
+      navigate('/orders')
+    } catch (err) {
+      console.error('送出訂單失敗:', err)
+      alert('❌ 訂單送出失敗')
+    }
+  }
 
   return (
     <div style={{ padding: 16 }}>
@@ -32,7 +59,25 @@ export default function CartPage() {
           </Link>
         </div>
       ) : (
-        <Cart />
+        <>
+          <Cart />
+          <div style={{ textAlign: 'right', marginTop: 24 }}>
+            <button
+              onClick={handleCheckout}
+              disabled={isLoading}
+              style={{
+                padding: '10px 18px',
+                borderRadius: 6,
+                background: '#4caf50',
+                color: '#fff',
+                border: 'none',
+                cursor: 'pointer',
+              }}
+            >
+              {isLoading ? '送出中…' : '送出訂單'}
+            </button>
+          </div>
+        </>
       )}
     </div>
   )
