@@ -1,24 +1,30 @@
+// src/features/products/productsApi.js
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const productsApi = createApi({
   reducerPath: 'productsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3001/' }),
-  endpoints: (builder) => ({
-    getProducts: builder.query({
-      query: () => 'products',
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3001' }), // 指向 Flask 假後台
+  tagTypes: ['Products', 'Orders'],
+  endpoints: (build) => ({
+    getProducts: build.query({
+      query: () => '/products',
+      providesTags: ['Products'],
     }),
-    getProductById: builder.query({
-      query: (id) => `products/${id}`,
+    getProductById: build.query({
+      query: (id) => `/products/${id}`,
+      providesTags: ['Products'],
     }),
-    createOrder: builder.mutation({
-      query: (order) => ({
-        url: 'orders',
+    getOrders: build.query({
+      query: () => '/orders',
+      providesTags: ['Orders'],
+    }),
+    createOrder: build.mutation({
+      query: (body) => ({
+        url: '/orders',
         method: 'POST',
-        body: order,
+        body,
       }),
-    }),
-    getOrders: builder.query({
-      query: () => 'orders',
+      invalidatesTags: ['Orders'],
     }),
   }),
 })
@@ -26,6 +32,6 @@ export const productsApi = createApi({
 export const {
   useGetProductsQuery,
   useGetProductByIdQuery,
-  useCreateOrderMutation,
   useGetOrdersQuery,
+  useCreateOrderMutation,
 } = productsApi
